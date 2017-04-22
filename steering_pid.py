@@ -1,16 +1,25 @@
 from pid import PID
 
-class VelocityPID(PID):
+class SteeringPID(PID):
     def __init__(self):
         PID.__init__(self)
-        self.angle = 0
+        self.Wangle = 0
         self.velocity = 0
-
+		self.Lerror = 0
+		self.error = 0
+		self.intergral = 0;
     # TODO: implement velocity pid
-    def get_required_pwm(self):
-        return 0
+	
+	
+    def get_required_pwm(self): #PWM signal for steering wheel
+		PWM = self.Wangle
+	
+        return PWM
 
-    def update_position(angle, offset):
-        self.angle = angle
-        self.offset = offset
+    def update_position(theta, offset):
+		self.Lerror = self.error
+		self.error = offset
+        self.Wangle = self.Kp*self.error+self.Ki*self.integral+self.Kd*(self.error-self.Lerror)
+		
+        #self.offset = offset
 
