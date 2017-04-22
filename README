@@ -1,3 +1,29 @@
 # trackrabbot
 
 A wheeled robot for pacing track athletes.
+
+-Trackrabbot
+  -steering_pid<-pid
+  -velocity_pid<-pid
+  -line_tracker
+  -vehicle
+
+Trackrabbot:
+contains main loop and connects funtions to external pins
+
+
+steering_pid:
+decides on wheel angle to maintain its self on the line. Uses a PID controller.
+
+
+Velocity_pid:
+sets the required velocity to meet time and distance requirements.
+
+line_tracker:
+gets camera input. calculates line offset.
+
+vehicle:
+used to connect program to external sensors and actuators.
+
+pid:
+contains perameters and functions of a pid controler.
