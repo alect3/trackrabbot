@@ -12,8 +12,11 @@ class SteeringPID(PID):
 	
 	
     def get_required_pwm(self): #PWM signal for steering wheel
-		PWM = self.Wangle
-	
+		PWM = self.Wangle+90
+		if PWM>100
+			PWM = 100
+		elif PWM <0
+			PWM = 0
         return PWM
 
     def update_position(theta, offset):
