@@ -1,8 +1,8 @@
 import time
 import RPi.GPIO as GPIO
 
-STEERING_PIN = 21
-MOTOR_PIN = 2
+STEERING_PIN = 2
+MOTOR_PIN = 21
 
 class Vehicle:
     def __init__(self):
@@ -14,8 +14,8 @@ class Vehicle:
         GPIO.setup(STEERING_PIN, GPIO.OUT)
         GPIO.setup(MOTOR_PIN, GPIO.OUT)
 
-        self.steer_gpio = GPIO.PWM(STEERING_PIN, 100)
-        self.motor_gpio = GPIO.PWM(MOTOR_PIN, 100)
+        self.steer_gpio = GPIO.PWM(STEERING_PIN, 1000)
+        self.motor_gpio = GPIO.PWM(MOTOR_PIN, 1000)
 
         self.steer_gpio.start(50)
         self.motor_gpio.start(50)
