@@ -21,7 +21,7 @@ class Vehicle:
         self.motor_gpio.start(50)
 
     def __del__(self):
-        halt()
+        self.halt()
 
     def halt(self):
         self.steer_gpio.stop()
