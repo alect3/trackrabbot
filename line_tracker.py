@@ -1,5 +1,7 @@
 import cv2
 
+center = [240, 240, 240]
+
 class LineTrackerException(Exception):
     pass
 
@@ -35,7 +37,7 @@ def find_line_offset(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #errors here #convert to grayscale 
     width = img[1].__len__()
     height = img.__len__()#image height
-    center = [width/2,width/2,width/2] #initial center points is set to center of image
+    # center = [width/2,width/2,width/2] #initial center points is set to center of image
     line = [height/4,height/2,3*height/4] #line heights
     left = [0,0,0]
     right = [0,0,0]
