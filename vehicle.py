@@ -5,6 +5,10 @@ STEERING_PIN = 20
 MOTOR_PIN = 21
 FREQUENCY = 50
 
+STEERING_MAX = 10
+STEERING_NEUTRAL = 8
+STEERING_MIN = 6
+
 class Vehicle:
     def __init__(self):
         self.start_time = time.clock()
@@ -47,5 +51,6 @@ class Vehicle:
         self.motor_gpio.ChangeDutyCycle(pwm)
 
     # TODO: GPIO interface
-    def set_steering(self, pwm):
+    def set_steering(self, percentage):
+        pwm = percentage*0.01*(STEERING_MAX - STEERING_MIN) + STEERING_MIN
         self.steer_gpio.ChangeDutyCycle(pwm)
