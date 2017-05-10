@@ -6,6 +6,7 @@ from steering_pid import SteeringPID
 from utils import calc_required_velocity
 
 import sys
+import json
 
 def main_loop(race):
     current_distance = 0
@@ -62,5 +63,5 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print 'Usage: {} <race_file.json>'.format(sys.argv[0])
     race_file = open(sys.argv[1])
-    race = Race(**json.dumps(race_file))
+    race = Race(**json.loads(race_file.read()))
     main_loop(race)

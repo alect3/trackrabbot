@@ -1,4 +1,8 @@
 import cv2
+from multiprocessing import Lock
+from threading import Thread
+import copy
+import time
 
 center = [240, 240, 240]
 
@@ -43,25 +47,15 @@ def find_line_offset(img):
     right = [0,0,0]
     
     NOL = 3 #number of lines
-    width = [0,0,0]
+    line_width = [0,0,0]
     
     for i in range(0,NOL):
         #(left,right,line) calculate left,right and center points of line at line number
         right[i],left[i],center[i]=line_points(img,center[i],line[i])
+	line_width[i] = right[i] - left[i]
     
-        #draw
-        start = line[i]-100
-        end = line[i]+100
-        img = camera_draw(img,left[i],right[i],center[i],start,end)
-        width[i] = right[i]-left[i]
-        
-    found_l = False
+    found_l = line_width[0]<line_width[1] and line_width[1]<line_width[2] # and (center[0]<center[1] and center[1]<center[2] or center[2]<center[1] and center[1]<center[0])
     
-    if width[0]<width[1]<width[2]:
-        if center[0]<center[1]<center[2]:
-            found_l = True
-        elif center[2]<center[1]<center[0]:
-            found_l = True
     gradient_x = center[0]-center[NOL-1]
     gradient_y = line[NOL-1] - line[0]
     gradient = gradient_y/gradient_x if gradient_x else 0
@@ -69,17 +63,38 @@ def find_line_offset(img):
     	return None
     return center[NOL/2] - 0.5 * width
 
-class LineTracker() 
+class LineTracker():
     def __init__(self): 
 	self.cap = cv2.VideoCapture(0)
+        self.img_mutex = Lock()
+	self.img = []
+	self.img_read_success = False
+	self.grab_img_thread_terminate = False
+	self.grab_img_thread = Thread(target = self.grab_img)
+	self.grab_img_thread.daemon = True
+	self.grab_img_thread.start()
 
     def __del__(self):
 	self.cap.release()
+	with self.img_mutex:
+	    self.grab_img_thread_terminate = True
+	self.grab_img_thread.join()
+	print "grab image thread terminated"
 
-    def get_position():
-	success, image = self.cap.read()
-        if not success:
-            raise ImageReadException("Image from camera could not be read")
+    def grab_img(self):
+	terminate = False
+        while not terminate:
+            with self.img_mutex:
+                self.img_read_success, self.img = self.cap.read()
+		terminate = self.grab_img_thread_terminate
+	    time.sleep(0.01)
+
+    def get_position(self):
+	with self.img_mutex:
+            if not self.img_read_success:
+                raise ImageReadException("Image from camera could not be read")
+            img = copy.deepcopy(self.img)
         offset = find_line_offset(img)
         if offset == None:
             raise NoLineFoundException("Line could not be located in image")
+	return offset
