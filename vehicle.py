@@ -9,6 +9,9 @@ STEERING_MAX = 10
 STEERING_NEUTRAL = 8
 STEERING_MIN = 6
 
+MOTOR_MIN = 7.2
+MOTOR_MAX = 9.2
+
 class Vehicle:
     def __init__(self):
         self.start_time = time.clock()
@@ -47,7 +50,8 @@ class Vehicle:
         return delta_distance/delta_time
 
     # TODO: GPIO interface
-    def set_motor(self, pwm):
+    def set_motor(self, percentage):
+        pwm = percentage*0.01*(MOTOR_MAX - MOTOR_MIN) + MOTOR_MIN
         self.motor_gpio.ChangeDutyCycle(pwm)
 
     # TODO: GPIO interface
