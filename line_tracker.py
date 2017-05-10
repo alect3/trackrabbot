@@ -61,7 +61,7 @@ def find_line_offset(img):
     gradient = gradient_y/gradient_x if gradient_x else 0
     if not found_l:
     	return None
-    return center[NOL/2] - 0.5 * width
+    return center[NOL] - 0.5 * width
 
 class LineTracker():
     def __init__(self): 
