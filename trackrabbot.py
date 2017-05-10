@@ -56,6 +56,7 @@ def main_loop(race):
 
         # update checkpoint
         next_checkpoint = race.get_next_checkpoint(current_distance)
+    vehicle.halt()
 
 
 if __name__ == "__main__":

@@ -1,10 +1,7 @@
 CheckPoint = namedtuple('CheckPoint', ['time', 'distance'])
 
 class Race:
-    def __init__(self, name, distance, time, checkpoints):
-        self.name = name
-        self.distance = distance
-        self.time = time
+    def __init__(self, checkpoints):
         self.checkpoints = map(CheckPoint._make, checkpoints) 
         self.current_checkpoint = 0
 
