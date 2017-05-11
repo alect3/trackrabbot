@@ -65,8 +65,8 @@ def find_line_offset(img):
     return center[NOL-1] - 0.5 * width
 
 class LineTracker():
-    def __init__(self): 
-	self.cap = cv2.VideoCapture(0)
+    def __init__(self, video_file=''): 
+        self.cap = cv2.VideoCapture(video_file if video_file else 0)
         self.img_mutex = Lock()
 	self.img = []
 	self.img_read_success = False
