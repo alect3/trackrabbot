@@ -55,7 +55,11 @@ def main_loop():
 	vehicle.set_steering(steering_pwm)
 
 if __name__ == "__main__":
-    t = Thread(target = main_loop)
-    t.daemon = True
-    t.start()
-    app.run(host='0.0.0.0',debug=False)
+    video = False
+    if video:
+        t = Thread(target = main_loop)
+	t.daemon = True
+	t.start()
+	app.run(host='0.0.0.0',debug=False)
+    else:
+        main_loop()   
