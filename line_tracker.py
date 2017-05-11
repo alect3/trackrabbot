@@ -4,6 +4,7 @@ from threading import Thread
 import copy
 import time
 
+
 center = [240, 240, 240]
 
 class LineTrackerException(Exception):
@@ -61,7 +62,7 @@ def find_line_offset(img):
     gradient = gradient_y/gradient_x if gradient_x else 0
     if not found_l:
     	return None
-    return center[NOL] - 0.5 * width
+    return center[NOL-1] - 0.5 * width
 
 class LineTracker():
     def __init__(self): 
@@ -86,8 +87,8 @@ class LineTracker():
         while not terminate:
             with self.img_mutex:
                 self.img_read_success, self.img = self.cap.read()
-		terminate = self.grab_img_thread_terminate
-	    time.sleep(0.01)
+	        terminate = self.grab_img_thread_terminate
+	        time.sleep(0.01)
 
     def get_position(self):
 	with self.img_mutex:
@@ -97,4 +98,6 @@ class LineTracker():
         offset = find_line_offset(img)
         if offset == None:
             raise NoLineFoundException("Line could not be located in image")
+            for i in xrange(3):
+	        center[i] = (centre[i] + 10) % 480
 	return offset
