@@ -23,25 +23,31 @@ def line_points(gray,center,line):
     pos_x2 = 0
     thresh = 180
     thresh,temp= cv2.threshold(gray,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)#auto thresholding
-
-    while((gray[line][(center)+pos_x1]>thresh)&(pos_x1<300)&((center+pos_x1)<(width-1))):
+	
+	#find right side of line
+    while((gray[line][(center)+pos_x1]>thresh)&(pos_x1<300)&((center+pos_x1)<(width-1))): 
         pos_x1 = pos_x1+1
+	#find left side of line
     while((gray[line][(center)-pos_x2]>thresh)&(pos_x2<300)&((center-pos_x2)>0)):
         pos_x2 = pos_x2+1 
     
     
     pos_x2 = center -pos_x2    
     pos_x1 = center +pos_x1
-    if pos_x1 >=width:
+    if pos_x1 >=width: #make sure its with in the screen size
         pos_x1 = width-1
     center = ((pos_x1)+(pos_x2))/2 #update center
     
     return pos_x1,pos_x2,center
 
+
+
 def find_line_offset(img):
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #errors here #convert to grayscale 
-    width = img[1].__len__()
-    height = img.__len__()#image height
+	#initalizing
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #convert to grayscale 
+    #image width and height
+	width = img[1].__len__()
+    height = img.__len__()
     # center = [width/2,width/2,width/2] #initial center points is set to center of image
     line = [height/4,height/2,3*height/4] #line heights
     left = [0,0,0]
@@ -50,11 +56,14 @@ def find_line_offset(img):
     NOL = 3 #number of lines
     line_width = [0,0,0]
     
+	###calculate###
     for i in range(0,NOL):
         #(left,right,line) calculate left,right and center points of line at line number
         right[i],left[i],center[i]=line_points(img,center[i],line[i])
 	line_width[i] = right[i] - left[i]
     
+	
+	###logic###
     found_l = line_width[0]<line_width[1] and line_width[1]<line_width[2] # and (center[0]<center[1] and center[1]<center[2] or center[2]<center[1] and center[1]<center[0])
     
     gradient_x = center[0]-center[NOL-1]
@@ -63,6 +72,7 @@ def find_line_offset(img):
     if not found_l:
     	return None
     return center[NOL-1] - 0.5 * width
+	
 
 class LineTracker():
     def __init__(self): 

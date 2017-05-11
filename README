@@ -7,6 +7,14 @@ A wheeled robot for pacing track athletes.
   -velocity_pid<-pid
   -line_tracker
   -vehicle
+  
+-vehicle_test
+-vehicle
+-utils
+-steering_test
+-steering_demo
+-simplerace.json
+
 
 Trackrabbot:
 contains main loop and connects funtions to external pins
