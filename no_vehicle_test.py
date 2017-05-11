@@ -1,4 +1,3 @@
-from vehicle import Vehicle
 from line_tracker import LineTracker, LineTrackerException 
 from velocity_pid import VelocityPID
 from steering_pid import SteeringPID
@@ -12,7 +11,6 @@ from threading import Thread
 
 app = Flask(__name__)
 
-vehicle = Vehicle()
 if len(sys.argv) > 1:
     line_tracker = LineTracker(sys.argv[1])
 else:
@@ -52,14 +50,8 @@ def main_loop():
 	steering_pwm = steering_pid.get_required_pwm()
         print "steering pwm {}".format(steering_pwm)
 
-	vehicle.set_steering(steering_pwm)
-
 if __name__ == "__main__":
-    video = False
-    if video:
-        t = Thread(target = main_loop)
-	t.daemon = True
-	t.start()
-	app.run(host='0.0.0.0',debug=False)
-    else:
-        main_loop()   
+    t = Thread(target = main_loop)
+    t.daemon = True
+    t.start()
+    app.run(host='0.0.0.0',debug=False)

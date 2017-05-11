@@ -10,7 +10,8 @@ class SteeringPID(PID):
 	self.integral = 0
 	
     def get_required_pwm(self): #PWM signal for steering wheel
-	PWM = self.Wangle+90
+	PWM = -self.Wangle/100+50
+        print "actual value: {}".format(PWM)
 	if PWM>100:
 	    PWM = 100
 	elif PWM <0:
