@@ -25,11 +25,18 @@ def line_points(gray,center,line):
     thresh,temp= cv2.threshold(gray,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)#auto thresholding
 	
 	#find right side of line
-    while((gray[line][(center)+pos_x1]>thresh)&(pos_x1<300)&((center+pos_x1)<(width-1))): 
+	pixelsvals = (gray[line][(center)+pos_x1]+gray[line+1][(center)+pos_x1]+gray[line+1][(center)+pos_x1])/3;
+	value1 = (pixelvalues>thresh);#pixel value is still within the line.
+    while(value1)&(pos_x1<300)&((center+pos_x1)<(width-1))): 
+		pixelsvals = (gray[line][(center)+pos_x1]+gray[line+1][(center)+pos_x1]+gray[line+1][(center)+pos_x1])/3;
+		value1 = (pixelvalues>thresh);#pixel value is still within the line.
         pos_x1 = pos_x1+1
 	#find left side of line
-    while((gray[line][(center)-pos_x2]>thresh)&(pos_x2<300)&((center-pos_x2)>0)):
-        pos_x2 = pos_x2+1 
+	value1 = (pixelvalues>thresh);#pixel value is still within the line.;
+    while((value1)&(pos_x2<300)&((center-pos_x2)>0)):
+       	pixelsvals = (gray[line][(center)-pos_x2]+gray[line+1][(center)-pos_x2]+gray[line+1][(center)-pos_x2])/3;
+		value1 = (pixelvalues>thresh);#pixel value is still within the line.
+		pos_x2 = pos_x2+1 
     
     
     pos_x2 = center -pos_x2    
